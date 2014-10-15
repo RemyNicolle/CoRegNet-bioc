@@ -1,5 +1,7 @@
 citHeader("To cite the R package 'CoRegNet' in your publication please use:")
 
+
+
 citEntry(entry  = "article",
          title  = "Hybrid Method Inference for The Construction of Cooperative Regulatory Network In Human",
          author = personList(
@@ -9,13 +11,13 @@ citEntry(entry  = "article",
                  person(first="Celine", last="Rouveirol"),
                  person(first="Mohamed", last="Elati")
     		),
-	    journal = "BMC Bioinformatics",
-	    year = "2009",
-	    volume  = "10",
-	    page =  "145",
+	    journal = "IEEE Transactions on NanoBioscience",
+	    year = "2014",
+	    volume  = "13",
+	    page =  "97--103",
 
 		
-		textVersion = paste("I. Chebil, R. Nicolle, G. Santini, C. Rouveirol, M. Elati, Hybrid Method Inference for The Construction of Cooperative Regulatory Network In Human, BMC bioinformatics, vol. 10, p. 145, 2009.")
+		textVersion = paste("I. Chebil, R. Nicolle, G. Santini, C. Rouveirol, M. Elati, Hybrid Method Inference for The Construction of Cooperative Regulatory Network In Human, BMC bioinformatics, vol. 13, p. 97--103, 2009.")
 	)
 
 
