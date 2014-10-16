@@ -2,6 +2,7 @@
 <!--
 %\VignetteIndexEntry{CoRegNet walkthrough, from transcriptomes to co-regulation network visualization}
 %\VignettePackage{CoRegNet}
+%\VignetteEngine{knitr::knitr}
 -->
 
 
