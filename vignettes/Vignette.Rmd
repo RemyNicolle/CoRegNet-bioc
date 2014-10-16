@@ -1,3 +1,10 @@
+<!-- rmarkdown v1 -->
+<!--
+%\VignetteIndexEntry{CoRegNet walkthrough, from transcriptomes to co-regulation network visualization}
+%\VignettePackage{CoRegNet}
+-->
+
+
 ---
 title: "CoRegNet Vignette"
 author: Remy Nicolle

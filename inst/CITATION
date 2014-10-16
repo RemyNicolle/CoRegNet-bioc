@@ -11,7 +11,7 @@ citEntry(entry  = "article",
     		),
 
 		
-		textVersion = paste("R. Nicolle,F. Radvanyi, M. Elati, CoRegNet: reconstruction and integrated analysis of co-regulatory networks", In preperation")
+		textVersion = paste("R. Nicolle,F. Radvanyi, M. Elati, CoRegNet: reconstruction and integrated analysis of co-regulatory networks, In preperation")
 	)
 
 
