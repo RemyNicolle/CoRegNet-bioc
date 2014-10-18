@@ -8,9 +8,7 @@ citEntry(entry  = "article",
                  person(first="Remy", last="Nicolle"),
                  person(first="Francois", last="Radvanyi"),
                  person(first="Mohamed", last="Elati")
-    		),
-
-		
+    		),		
 		textVersion = paste("R. Nicolle,F. Radvanyi, M. Elati, CoRegNet: reconstruction and integrated analysis of co-regulatory networks, In preperation")
 	)
 
