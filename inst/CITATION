@@ -5,11 +5,10 @@ citHeader("To cite the R package 'CoRegNet' in your publication please use:")
 citEntry(entry  = "Article",
          title  = "CoRegNet: reconstruction and integrated analysis of co-regulatory networks",
          author = personList(
-                 person(first="Remy", last="Nicolle"),
-                 person(first="Francois", last="Radvanyi"),
-                 person(first="Mohamed", last="Elati")
+                 person(given="Remy", family="Nicolle"),
+                 person(given="Francois", family="Radvanyi"),
+                 person(given="Mohamed", family="Elati")
     		),
-			volume= "73",
 		year="2014",
 		journal="In preperation",
 		textVersion = paste("R. Nicolle,F. Radvanyi, M. Elati,","
@@ -22,14 +21,14 @@ citEntry(entry  = "Article",
 citEntry(entry	= "Manual",
 	 title	= "CoRegNet: reconstruction and integrated analysis of co-regulatory networks",
 	 author = c(
-         person(first="Remy", last="Nicolle", email="remy.c.nicolle@gmail.com",
+         person(given="Remy", family="Nicolle", email="remy.c.nicolle@gmail.com",
                 role = c("aut", "cre")),
-                 person(first="Thibault", last="Venzac"),
-                 person(first="Mohamed", last="Elati")
+                 person(given="Thibault", family="Venzac"),
+                 person(given="Mohamed", family="Elati")
 				 ),
 	 year = "2014",
 	 textVersion = paste(
-	 "Nicolle, R., Venzac, T., Struyf, A., Hubert, M., Hornik, K.(2014).",
+	 "Nicolle, R., Venzac, T., Elati, M.(2014).",
 	"CoRegNet: reconstruction and integrated analysis of co-regulatory networks. v1", sep=""))
 
 
