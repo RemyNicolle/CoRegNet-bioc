@@ -2,18 +2,35 @@ citHeader("To cite the R package 'CoRegNet' in your publication please use:")
 
 
 
-citEntry(entry  = "article",
+citEntry(entry  = "Article",
          title  = "CoRegNet: reconstruction and integrated analysis of co-regulatory networks",
          author = personList(
                  person(first="Remy", last="Nicolle"),
                  person(first="Francois", last="Radvanyi"),
                  person(first="Mohamed", last="Elati")
     		),
-
-		
-		textVersion = paste("R. Nicolle,F. Radvanyi, M. Elati, CoRegNet: reconstruction and integrated analysis of co-regulatory networks, In preperation")
+			volume= "73",
+		year="2014",
+		journal="In preperation",
+		textVersion = paste("R. Nicolle,F. Radvanyi, M. Elati,","
+		 CoRegNet: reconstruction and integrated analysis of co-regulatory networks,",
+		  "In preperation")
 	)
 
+
+
+citEntry(entry	= "Manual",
+	 title	= "CoRegNet: reconstruction and integrated analysis of co-regulatory networks",
+	 author = c(
+         person(first="Remy", last="Nicolle", email="remy.c.nicolle@gmail.com",
+                role = c("aut", "cre")),
+                 person(first="Thibault", last="Venzac"),
+                 person(first="Mohamed", last="Elati")
+				 ),
+	 year = "2014",
+	 textVersion = paste(
+	 "Nicolle, R., Venzac, T., Struyf, A., Hubert, M., Hornik, K.(2014).",
+	"CoRegNet: reconstruction and integrated analysis of co-regulatory networks. v1", sep=""))
 
 
 citFooter("This free open-source software implements academic
