@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2011.5.6)  15 OCT 2014 12:40
+This is pdfTeX, Version 3.1415926-1.40.11 (TeX Live 2010) (format=pdflatex 2011.5.6)  18 OCT 2014 14:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -278,29 +278,68 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 116.
 
-[2] [3] [4] [5] [6] [7] (./CoRegNet.aux) ) 
+[2] [3] [4] [5] [6] [7] <fig/wholeApp.png, id=34, 1321.93875pt x 899.36pt>
+File: fig/wholeApp.png Graphic file (type png)
+
+<use fig/wholeApp.png>
+Package pdftex.def Info: fig/wholeApp.png used on input line 406.
+(pdftex.def)             Requested size: 358.46039pt x 243.8734pt.
+ [8 <./fig/wholeApp.png (PNG copy)>]
+<fig/basal1.png, id=38, 1001.7425pt x 1028.84375pt>
+File: fig/basal1.png Graphic file (type png)
+ <use fig/basal1.png>
+Package pdftex.def Info: fig/basal1.png used on input line 415.
+(pdftex.def)             Requested size: 313.65027pt x 322.14084pt.
+
+<fig/luminal1.png, id=40, 1000.73875pt x 1030.85126pt>
+File: fig/luminal1.png Graphic file (type png)
+ <use fig/luminal1.png>
+Package pdftex.def Info: fig/luminal1.png used on input line 418.
+(pdftex.def)             Requested size: 313.65027pt x 323.084pt.
+
+
+LaTeX Warning: Float too large for page by 111.08414pt on input line 421.
+
+<fig/PPARGLocalView.png, id=41, 1224.575pt x 401.5pt>
+File: fig/PPARGLocalView.png Graphic file (type png)
+
+<use fig/PPARGLocalView.png>
+Package pdftex.def Info: fig/PPARGLocalView.png used on input line 434.
+(pdftex.def)             Requested size: 313.65027pt x 102.83142pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[9] [10 <./fig/basal1.png> <./fig/luminal1.png>]
+<fig/coregnetWithEvidence.png, id=50, 1149.29375pt x 1110.1475pt>
+File: fig/coregnetWithEvidence.png Graphic file (type png)
+
+<use fig/coregnetWithEvidence.png>
+Package pdftex.def Info: fig/coregnetWithEvidence.png used on input line 447.
+(pdftex.def)             Requested size: 224.03688pt x 216.40166pt.
+ [11 <./fig/PPARGLocalView.png> <./fig/coregnetWithEvidence.png>] (./CoRegNet.a
+ux) ) 
 Here is how much of TeX's memory you used:
- 2680 strings out of 493763
- 38588 string characters out of 3144955
- 88191 words of memory out of 3000000
- 5919 multiletter control sequences out of 15000+200000
+ 2712 strings out of 493763
+ 39234 string characters out of 3144955
+ 88226 words of memory out of 3000000
+ 5944 multiletter control sequences out of 15000+200000
  24353 words of font info for 55 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 37i,6n,23p,248b,278s stack positions out of 5000i,500n,10000p,200000b,50000s
-{/usr/local/texlive/2010/texmf-dist/f
-onts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2010/texmf-dist/fo
-nts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2010/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2010/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2010/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2010/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmsltt10.pfb></usr/local/texlive/2010/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2010/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2010/texmf-dist/fonts/typ
-e1/public/cm-super/sfrm1200.pfb>
-Output written on CoRegNet.pdf (7 pages, 112358 bytes).
+ 37i,6n,23p,410b,278s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/local/texlive/2010/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.
+enc}</usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.p
+fb></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pf
+b></usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb>
+</usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></
+usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb><
+/usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
+usr/local/texlive/2010/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></u
+sr/local/texlive/2010/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on CoRegNet.pdf (11 pages, 1949315 bytes).
 PDF statistics:
- 62 PDF objects out of 1000 (max. 8388607)
- 43 compressed objects within 1 object stream
+ 84 PDF objects out of 1000 (max. 8388607)
+ 52 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 5 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 30 words of extra memory for PDF output out of 10000 (max. 10000000)
 

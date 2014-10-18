@@ -98,8 +98,8 @@ display <- function(coregnetwork,expressionData=NULL,TFA = NULL,alterationData=N
                                            includeCSS(system.file('www/css/style.css', package = 'CoRegNet')),
                                            
                                            includeScript(system.file('www/js/cytoscape.min.js', package = 'CoRegNet')),
+                                           includeScript(system.file('www/js/cy.js', package = 'CoRegNet')),
                                            
-                                           includeScript('/Users/nicolle/workspace/JCJC/svnx/Travaux/LICORN/inst/www/js/cy.js'),
 
                                            includeCSS(system.file('www/js/jquery-slick/css/dcslick.css', package = 'CoRegNet')),
                  
