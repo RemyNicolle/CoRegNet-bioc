@@ -39,10 +39,9 @@ illustrate the use of the package.
 
     \begin{Schunk}
     \begin{Sinput}
-        data(CIT_BLCA_EXP)
-        dim(CIT_BLCA_EXP)
         library(CoRegNet)
-        data(HumanTF)
+        data(CIT_BLCA_EXP,HumanTF)
+        dim(CIT_BLCA_EXP)
         #showing 6 first TF in the gene expression dataset
         head(intersect(rownames(CIT_BLCA_EXP),HumanTF))
     \end{Sinput}
@@ -165,7 +164,7 @@ two functions : \textit{addEvidences} and \textit{addCooperativeEvidences}.
     data(CHEA_sub)
 
     #ChIP data from the ENCODE project
-    data(ENCODE_subs)
+    data(ENCODE_sub)
 
     # Protein protein interactions between TF from the HIPPIE database
     data(HIPPIE_sub)
@@ -173,7 +172,7 @@ two functions : \textit{addEvidences} and \textit{addCooperativeEvidences}.
     # Protein protein interactions between TF from the STRING database
     data(STRING_sub)
 
-    enrichedGRN = addEvidences(grn,CHEA_sub,ENCODE_subs)
+    enrichedGRN = addEvidences(grn,CHEA_sub,ENCODE_sub)
     enrichedGRN = addCooperativeEvidences(enrichedGRN,HIPPIE_sub,STRING_sub)
 
 \end{Sinput}
@@ -222,7 +221,8 @@ datasets including the network inference score.
     refinedGRN = refine(enrichedGRN)
     print(refinedGRN)
     # Example of supervised refinement with the CHEA chip data
-    refinedGRN = refine(enrichedGRN, integration="supervised",referenceEvidence="CHEA_sub")
+    refinedGRN = refine(enrichedGRN, integration="supervised",
+            referenceEvidence="CHEA_sub")
     print(refinedGRN)
     \end{Sinput}
 \end{Schunk}
@@ -373,7 +373,8 @@ examples are shown below.
     display(grn,expressionData=CIT_BLCA_EXP,TFA=CITinf,clinicalData=citclinical)
 
 
-    display(grn,expressionData=CIT_BLCA_EXP,TFA=CITinf,alterationData=CIT_BLCA_CNV,clinicalData=citclinical)
+    display(grn,expressionData=CIT_BLCA_EXP,TFA=CITinf,alterationData=CIT_BLCA_CNV,
+            clinicalData=citclinical)
 \end{Sinput}
 \end{Schunk}
 
@@ -411,10 +412,10 @@ The bottom part of the page contains a plot reactive to action performs on the n
 \begin{figure}[hp!]
 \centering
 {\LARGE Basal-like bladder cancer co-regulator network}
-\includegraphics[width=0.7\linewidth]{fig/basal1}
+\includegraphics[width=0.5\linewidth]{fig/basal1}
 \\
 {\LARGE Luminal-like bladder cancer co-regulator network}
-\includegraphics[width=0.7\linewidth]{fig/luminal1}
+\includegraphics[width=0.5\linewidth]{fig/luminal1}
 \caption{Subtype specific co-regulator network. The color of each TF/node is based on the mean influence in all samples of the subtype.}
 \label{fig:subtypeCoreg}
 \end{figure}
