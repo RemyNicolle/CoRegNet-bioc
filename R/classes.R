@@ -135,6 +135,9 @@ coregnet <- function(GRN,expressionDATA=NULL) {
 
 
 
+
+
+
 setGeneric("coregnetToList", function(network) {
     standardGeneric("coregnetToList")
 })
@@ -157,7 +160,7 @@ setMethod("coregnetToDataframe", signature(network = "coregnet"),
           })
     
 
-		  
+
 
 
 setGeneric("targets", function(object,regulator=NULL,type=c("regulating","activating","repressing")) {

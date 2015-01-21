@@ -1,6 +1,5 @@
 useDynLib(CoRegNet)
 
-
 export(discretizeExpressionData)
 export(coregnet)
 export(hLICORN)
