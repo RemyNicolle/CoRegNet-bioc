@@ -1,66 +1,3 @@
-splitlearning= function(genelist){
-  
-  if(length(genelist) >= 1000){
-    return( split(genelist,cut(1:length(genelist),length(genelist)/20)) )
-  }else if(length(genelist) > 20){
-    return(split(genelist,cut(1:length(genelist),length(genelist)/5)))  
-  }else{
-    return(as.list(genelist))
-  }
-  
-}
-
-
-
-.getDefaultParameters = function(type,nsamp,regexp)
-{
-    return(list(
-    "maxCoregSize"=floor(log(nsamp,base=3)),   #default is always the truncated log base 3 of number of samples
-    "searchSpace" = c(    "fast"=1000,    "accurate"=10000)[type],#defines the search space, the number of "best" coregulators of a genes that can be stored and compard to new possible ones at a given t of the search process. Specifying anything greater or equal to the total number of coregulator will perform an exhaustive search which rarely changes anything
-    "nGRN" = c(    "fast"=10,    "accurate"=100)    [type]  ,
-    "minGeneSupport"=0.1,
-    # the default is always at least 10% of samples with a +1 ou -1 discretized expression value
-    "minCoregSupport"=c("fast"=.adaptiveCoregSupport(regexp,maxCoregSets=1e+05),"accurate"=.adaptiveCoregSupport(regexp,maxCoregSets=1e+04)),
-    "threshold" = 1/3
-    ))
-}
-
-
-
-
-.completeParameters = function(listOfParameters,nsamp,regexp)
-{
-    defaultParam = .getDefaultParameters("accurate",nsamp,regexp)
-    if(length(intersect(names(listOfParameters),names(defaultParam))) != 6){
-        missingArgs = setdiff(names(defaultParam),names(listOfParameters))
-        return(c(listOfParameters,defaultParam[missingArgs]))
-    }else if (names(listOfParameters) == NULL  ){
-        return(defaultParam)
-    }else if(length(intersect(names(listOfParameters),names(defaultParam))) == 6){
-        return(listOfParameters)
-    }else{
-        return(defaultParam)
-    }
-}
-
-
-
-
-
-# support minus and plus are used to get a string vector of the discrete data.
-# These are necessary for the C implementation of LICORN and until it is better integrated in the R package
-.supportminus = function(coregs,regexp){
-    if(length(which(apply(matrix(regexp[coregs,],nrow=length(coregs),ncol=ncol(regexp)),2,sum) == -(length(coregs))))>0){
-        return( paste(which(apply(matrix(regexp[coregs,],nrow=length(coregs),ncol=ncol(regexp)),2,sum) == -(length(coregs))),"-",sep=""))
-    }else{        return(NULL)    }
-}
-
-.supportplus = function(coregs,regexp){
-    if(length(which(apply(matrix(regexp[coregs,],nrow=length(coregs),ncol=ncol(regexp)),2,sum) == (length(coregs))))>0){
-        return( paste(which(apply(matrix(regexp[coregs,],nrow=length(coregs),ncol=ncol(regexp)),2,sum) == (length(coregs))),"+",sep=""))
-    }else{        return(NULL)    }
-}
-
 
 # a function ...
 .quicknonuniqgrnsTOSIGRNS = function(sigrns)
@@ -109,84 +46,6 @@ splitlearning= function(genelist){
     return(list("sigrns"=sigrns,"adjList"=SIGRNS))
 }
 
-
-
-
-# the names of the genes need to be renamed, one reason is that some genes have weird characters in their name (@ - ...)
-# this can raise errors in R, especially for formulas, therefore, the gene names are remapped to generic names (A1234 ...)
-# This functions gets back real names in the GRN
-.pastGRN = function(x){if(length(x)>1){return(paste(x,collapse=" "))}else{return(x)}}
-.remapGRN = function(GRN,mapidtogene){
-    GRN[,1] =mapidtogene[GRN[,1]]
-    GRN[,2] =sapply(lapply(strsplit(GRN[,2], " "),function(x){return(mapidtogene[x])}),.pastGRN)
-    GRN[,3] =sapply(lapply(strsplit(GRN[,3], " "),function(x){return(mapidtogene[x])}),.pastGRN)
-    return(GRN)
-}
-
-# This runs HLICORN on sets of genes, it's unintelligently called segmented HLICORN because it runs on "segments" of genes
-# This makes it possible to be easly run in parallel
-.segmentedHLICORN =function(genes,coreg,geneDiscExp,genexp,regnexp,nresult,ouvertFerme,threshold)
-{
-    
-    if(length(genes)==1){
-        genedexp = t(matrix(geneDiscExp[genes,]))
-        rownames(genedexp) = genes
-        gexp =  t(matrix(genexp[genes,]))
-        rownames(gexp) = genes
-    }else if(length(genes)>1){
-        genedexp = geneDiscExp[genes,]
-        gexp = genexp[genes,]
-    }else{
-        return(NULL)
-    }
-    
-    
-    
-    coreg=unlist(coreg)
-    genexp = apply(genedexp,1,paste,collapse=". ")
-    genexp=paste(names(genexp),genexp)
-    x= .C("LICORN",as.character(coreg),as.character(genexp),as.character(rep("",(nresult * nrow(genedexp)))),as.double(threshold),
-    as.integer(ouvertFerme),as.integer(max(nchar(c(coreg,genexp))))
-    ,as.integer(max(nchar(rownames(genedexp)))),as.integer(ncol(genedexp))   ,as.integer(length(coreg)),
-    as.integer(nrow(genedexp))    ,as.integer(nresult))
-    
-    x[[3]] = x[[3]][which(x[[3]] != "")]
-    
-    
-    if(length(x[[3]]) ==0){
-      return(NULL)
-    }
-    GRN = do.call(rbind,strsplit(x[[3]],";"))
-    
-    if(ncol(GRN) !=4){
-        print(head(GRN))
-        stop("Something went wrong when mining discrete GRNs. (probably a bug in the C implementation)")
-    }
-    #remove lines in which a regulator is both an activator and a repressor
-    allact = strsplit(GRN[,2]," ")
-    allrep = strsplit(GRN[,3]," ")
-    goodgrn = sapply(1:length(allact),function(i){return(length(intersect(allact[[i]],allrep[[i]]))==0)})
-    GRN = GRN[which(goodgrn),1:3]
-    rm(x)
-    
-    if(is.matrix(GRN) | is.data.frame(GRN)){
-        #linearmodels=apply(GRN,1,.linearCoregulationBootstrap,genexp=gexp,regnexp=regnexp,numBootstrap=numBootstrap)
-        linearmodels=.getEntry(apply(GRN,1,.fitGRN,genexp=t(gexp),regexp=t(regnexp),permut=FALSE),"numscores")
-    }else{
-        #    linearmodels=.linearCoregulationBootstrap(as.character(GRN),genexp=gexp,regnexp=regnexp,numBootstrap=numBootstrap)
-        linearmodels=.fitGRN(as.character(GRN),genexp=t(gexp),regexp=t(regnexp),permut=FALSE)$numscores
-    }
-    
-    numscores=data.frame(t(linearmodels),stringsAsFactors = FALSE)
-    
-    numscores[,3]=as.numeric(numscores[,3])
-    numscores[,4]=as.numeric(numscores[,4])
-    numscores[,5]=as.numeric(numscores[,5])
-    numscores[,6]=as.numeric(numscores[,6])
-    colnames(GRN)=c("Target","coact","corep")
-    
-    return(data.frame(GRN,numscores,stringsAsFactors = FALSE))
-}
 
 
 
@@ -307,34 +166,86 @@ splitlearning= function(genelist){
 }
 
 
-.mineCoreg = function(regexp,maxCoreg=floor(log(ncol(regexp),base=3)),minGeneSupport=0.2,minCoregSupport)
-{
-    
-    trans = list()
-    for( i in 1:ncol(regexp)){
-        trans[[paste(i,"+",sep="")]] = names(which(regexp[,i] ==1))
-    }
-    for( i in 1:ncol(regexp)){
-        trans[[paste(i,"-",sep="")]] = names(which(regexp[,i] ==-1))
-    }
-    #library(arules)
-    # the minsupport is divided by 2 because we count twice the number of samples (positives and negatives)
-    transitemfreq =c(suppressWarnings(apriori(trans,parameter=list(support = minGeneSupport/2,maxlen=1,target="frequent itemsets")
-    ,control=list(verbose=FALSE))),
-    
-    suppressWarnings(apriori(trans,parameter=list(support =minCoregSupport/2,minlen=2,maxlen=maxCoreg,target="closed frequent itemsets")
-    ,control=list(verbose=FALSE))))
-    
-    
-    frecoreg0 = as((slot(transitemfreq,"items")),"list")
-    return(
-    unlist(lapply((frecoreg0),function(coregs){
-        paste(c(coregs,    .supportminus(coregs,regexp),.supportplus(coregs,regexp)),collapse=" ")
-    }))
-    
-    )
-    
+# load("~/workspace/coRegNet/TCGA-bladder/BLCArnaseq.271.RData")
+
+# load("~/workspace/coRegNet/CIT/CITtumsampandNormalsEXP.RData")
+# expression = exp
+# library(CoRegNet)
+# library(parallel)
+# data(HumanTF)
+# TF =HumanTF
+# nThreshQuantile = 100
+# scaled=F
+# verbose=T
+
+
+
+automaticParameters = function(expression,TF,nThreshQuantile = 1000,scaled=FALSE,verbose=FALSE){
+	#work only on TF
+    subtf = expression[intersect(rownames(expression),TF),]
+	# scale expression if not already done
+    if(!scaled){
+        subtf = t(scale(t(subtf),scale=F))
+	}else{
+			 subtf=as.matrix(subtf)
+	}
+	
+    #generate random TF expression
+		#     randomtf = mclapply(1:sampling,function(i){
+		# return(t(apply(subtf,1,function(x){x[sample(1:ncol(subtf))]})))
+		#     })
+	#define several thresholds to test
+	thresholds= quantile(abs(as.vector(subtf)),probs=(1:(nThreshQuantile-1))/nThreshQuantile)
+    nco = ncol(subtf)
+    nro = nrow(subtf)	
+	#for each threshold, compare the random number of pairs in each sample versus the real number of pairs
+	discTests=mclapply(thresholds,function(th){
+		print(th)
+	    realSup=meanSupport(subtf,th,nco,nro)
+		prob= meanSupport(subtf,th,nco,nro,getProb=TRUE)
+		estimeProb = ((prob)^2)*(((nro*(nro -1))/2))*(2*nco)
+		return(c(pnorm(realSup,estimeProb,sqrt(estimeProb)), (realSup-estimeProb)/sqrt(estimeProb) ))
+#		# all this is to compare to random data		
+#	    return(ppois(realSup,estimeProb,lower.tail=F))
+#		if(is.null(realSup)){return(NULL)}
+#		randomSup=unlist(lapply(randomtf,meanSupport,th,nco,nro))
+		#(realSup-mean(randomSup))/sd(randomSup)  Z-score, kind of...
+#		return(c(realSup,estimeProb,max(randomSup),mean(randomSup),sd(randomSup),meanSupport(subtf,th,nco,nro,T)))
+	})
+	discTests=cbind(do.call(rbind,discTests),thresholds)
+	
+	# plot the distribution of the z-score of the number of pairs for each threshold
+	if(verbose){
+		plot(discTests[,3:2],type="l",ylab="z-score",xlab="threshold",main="Deviation from random",
+		sub="blue : standard deviation, green 0.5 and 2 times SD.")
+	    abline(v=sd(subtf),col="green")
+		abline(v=0.5*sd(subtf),col="blue",lty="dotted")
+		abline(v=2*sd(subtf),col="blue",lty="dotted")
+	}
+	
+	discTh = discTests[which.max(discTests[,2]),3]
+	# if the maximum z-score is too high or too low, just return the standard deviation
+	if(discTh > 0.5* sd(subtf) & discTh < 2*sd(subtf)){
+		return(discTh)
+	}else{
+		return(sd(subtf))
+	}
+	
 }
 
 
+#function to compute the mean Support (in the itemset sense, meaning the number of samples with a non zero value)
+# of all pairs of TF given a discretiation threshold
+meanSupport=function(centered,threshold,nco,nro,getMeanSup=F,getProb=F){
+	regBitData = cbind(	matrix(  centered >= threshold   ,nrow=nro,ncol=nco),
+	matrix(  centered <= (-threshold)   ,nrow=nro,ncol=nco))
+	if(getProb){
+		return(sum(regBitData)/(nro* (2*nco)))
+	}
+	if(getMeanSup){
+		return(mean(apply(regBitData,1,sum)))
+	}
+	sum(suppressWarnings(apriori(	as(t(regBitData),"transactions"),parameter=list(support = 10^-100,maxlen=2,minlen=2,target="frequent itemsets")
+    ,control=list(verbose=FALSE)))@quality[,1] * nco*2)#/ ((nro*(nro -1))/2)
 
+}

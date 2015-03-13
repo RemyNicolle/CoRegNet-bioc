@@ -12,7 +12,10 @@ hLICORN(numericalExpression, discreteExpression =
 discretizeExpressionData(numericalExpression), 
 TFlist, GeneList = setdiff(rownames(numericalExpression), TFlist),
 parallel = c("multicore", "no", "snow"), cluster = NULL,
-searchParameters = c("fast", "accurate"), verbose = FALSE)
+minGeneSupport=0.1,minCoregSupport = 0.1,
+maxCoreg=length(TFlist),
+searchThresh=1/3,nGRN=100,
+verbose=FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -55,10 +58,20 @@ A object of type cluster from the snow package which describes
 a cluster of computer to run the inference of each gene in parallel.
 Needed only when parallel is set to snow.
 }
-  \item{searchParameters}{
-optional. Can be either a character defining the type of LICORN parameters 
-to use fast or accurate or a list specifying partially or
-all the LICORN parameters. See details.
+  \item{minGeneSupport}{
+A float between 0 and 1. Minimum number of samples in which a gene has to have non-zero discretized expression value to be considered for regulatory network inference.
+}
+ \item{minCoregSupport}{
+A float between 0 and 1. Minimum number of samples in which a set of co-regulators have the same non-zero discretized expression value to be considered as a potential set of co-regulator. Default is 0.1 . Can be increased in case of limitations on memmory.
+}
+ \item{maxCoreg}{
+A integer. Maximum size of co-regulator to consider. Default is set to the number of TF. Can be decreased in case of limitations on memmory.
+}
+ \item{searchThresh}{
+A float between 0 and 1. Minimum proportion of sample in which a gene and a set of co-regulators must have the same non-zero discretized value in order to be considered as a potential co-regulator of the gene.
+}
+ \item{nGRN}{
+  if NA, takes only the best GRN models.
 }
   \item{verbose}{
 Sets wether information will appear in console during computation.
@@ -77,30 +90,9 @@ dataset. For Human, a list of TF is included as default data set
 using \code{data(HumanTF)} for symbols or \code{data(HumanTF_entrezgene)} 
 for entrez gene IDs.
 
-The LICORN requires several parameters. Two sets of parameters 
-are pre-included in the function and are accessible through 
-the \code{searchParameters} argument
-as \code{fast} or \code{accurate} run.
+In case of memmory overflow, a higher minCoregSupport (0.2 to 0.4) will perform more shallow search of co-regulators but will limit the quantity of memmory used.
 
-The algorithm can be further tuned by specifying each of the
-required argument as a list given in the \code{searchParameters}
-argument in place of the predefined parameter name.
-
-The possible parameter specification are listed below.
-\itemize{
-\item maxCoregSize. The maximum number of TF to be selected as a set of
-coregulators. By default is computed as the truncated log base 3
-of number of samples.
-\item searchSpace. The maximum number of co-regulator to test for each gene. This parameter is defined for the best-first heuristic search and
-is set to 
-10,000 for the accurate parameters and 1,000 for the fast.
-This parameters mainly changes the speed of the algorithm with a insignificant
-impact on the result.
-\item nGRN. The maximum number of Gene Regulatory Network to output for each gene which will then be tested on the continuous expression data. Default to 100 and 10 for accurate and fast settings respectively.
-\item minGeneSupport. Minimum number of samples in which a gene must have a non-zero discretized expression value to be regarded for GRN inference.
-\item minCoregSupport. Minimum number of samples in which regulators must be co-expressed to be considered as a set of co-regulators. The default is to obtain 100,000 and 10,000 co-regulator sets for accurate and fast settings respectively. Must be a value between 0 and 1.
-
-}
+In some cases, in particular for very large datasets (several hundreds and thousands of samples), a lower minCoregSupport (down to 0.01) can be used for deep search.
 }
 
 
@@ -134,16 +126,18 @@ The speed of the inference is dependant on several factors. The number of genes,
 \examples{
 # Dummy expression data
 gexp=matrix(rnorm(2600,sd=3),ncol=100)
+
 gexp=rbind(gexp,do.call(rbind,lapply(1:26,function(i){
 tf = sample(1:26,4)
-  return((gexp[tf[1],]+gexp[tf[2],] -gexp[tf[3],]-gexp[tf[4],] +rnorm(100,sd=3))/2)})))
+  return((gexp[tf[1],]+gexp[tf[2],] -gexp[tf[3],]-gexp[tf[4],] +rnorm(100,sd=0.5))/2)})))
 dimnames(gexp)=list(c(letters,LETTERS),paste("s",1:100,sep=""))
 
 ## Simple example of network inference
 dummyNet=hLICORN(gexp,TFlist = letters)
 
 ## Infer a network only on a subset of genes
-dummyNet=hLICORN(gexp,TFlist = letters,GeneList=c("A","B"))
+subgene = unique(dummyNet@GRN$Target)[1:2]
+dummyNet=hLICORN(gexp,TFlist = letters,GeneList=subgene)
 
 ## Discretize data based on a set of reference samples (here 10 first)
 discexp = discretizeExpressionData(gexp,refSamples=1:10)
