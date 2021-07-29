@@ -2,8 +2,8 @@ Package: CoRegNet
 Type: Package
 Title: CoRegNet : reconstruction and integrated analysis of co-regulatory
 	networks
-Version: 1.5.0
-Date: 2015-03-25
+Version: 1.5.2
+Date: 2017-09-19
 Author: Remy Nicolle, Thibault Venzac and Mohamed Elati
 Maintainer: Remy Nicolle <remy.c.nicolle@gmail.com>
 Description: This package provides methods to identify active
@@ -23,7 +23,7 @@ Description: This package provides methods to identify active
         transcriptional network including co-regulation information.
 License: GPL-3
 Depends: R (>= 2.14), igraph, shiny, arules, methods
-Suggests: RColorBrewer, gplots, BiocStyle, knitr
+Suggests: RColorBrewer, gplots, BiocStyle, knitr, rmarkdown
 VignetteBuilder: knitr
 biocViews: NetworkInference, NetworkEnrichment, GeneRegulation,
         GeneExpression, GraphAndNetwork,SystemsBiology, Network,
