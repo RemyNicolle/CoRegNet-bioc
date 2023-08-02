@@ -23,7 +23,7 @@ Description: This package provides methods to identify active
         transcriptional network including co-regulation information.
 License: GPL-3
 Depends: R (>= 2.14), igraph, shiny, arules, methods
-Suggests: RColorBrewer, gplots, BiocStyle, knitr, rmarkdown
+Suggests: RColorBrewer, gplots, BiocGenerics, BiocStyle, knitr, rmarkdown, RUnit
 VignetteBuilder: knitr
 biocViews: NetworkInference, NetworkEnrichment, GeneRegulation,
         GeneExpression, GraphAndNetwork,SystemsBiology, Network,
